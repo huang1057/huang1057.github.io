@@ -1,0 +1,122 @@
+/* 基本样式重置 */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    line-height: 1.6;
+    color: #333;
+    background-color: #f0f2f5; /* 更浅的灰色背景 */
+    padding: 20px;
+}
+
+/* 容器样式 */
+.container {
+    width: 80%;
+    margin: 0 auto;
+    max-width: 1200px;
+    padding: 20px;
+    border-radius: 8px; /* 圆角边框 */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* 轻微阴影 */
+    background-color: #ffffffcc; /* 稍微带点透明的白色背景 */
+}
+
+/* 头部样式 */
+header {
+    background: linear-gradient(to right, #333, #555); /* 渐变背景 */
+    color: #fff;
+    padding: 15px 0;
+    border-radius: 8px 8px 0 0; /* 顶部圆角 */
+}
+
+header h1 {
+    float: left;
+    font-size: 2.5em;
+}
+
+header nav ul {
+    list-style: none;
+    float: right;
+}
+
+header nav ul li {
+    display: inline;
+    margin-left: 25px;
+}
+
+header nav ul li a {
+    color: #fff;
+    text-decoration: none;
+    font-size: 1.1em;
+    transition: text-decoration 0.3s ease; /* 平滑的过渡效果 */
+}
+
+header nav ul li a:hover {
+    text-decoration: underline;
+}
+
+/* 英雄区域样式 */
+.hero {
+    background: url('hero-background.jpg') no-repeat center center/cover; /* 添加背景图片 */
+    color: #fff;
+    text-align: center;
+    padding: 150px 20px;
+    border-radius: 8px; /* 圆角边框 */
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.3); /* 更深的阴影 */
+    position: relative;
+}
+
+.hero::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5); /* 半透明遮罩 */
+    pointer-events: none; /* 不影响点击事件 */
+}
+
+.hero h2 {
+    font-size: 3.5em;
+    margin-bottom: 15px;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5); /* 文字阴影 */
+}
+
+/* 内容区域样式 */
+.content {
+    background: #fff;
+    padding: 30px;
+    margin-bottom: 30px;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.15); /* 更深的阴影 */
+    border-radius: 8px; /* 圆角边框 */
+}
+
+.content h2 {
+    margin-bottom: 25px;
+    border-bottom: 2px solid #f0f2f5; /* 下划线 */
+    padding-bottom: 10px;
+}
+
+.content p {
+    margin-bottom: 25px;
+    font-size: 1.1em;
+}
+
+.content article {
+    margin-bottom: 30px;
+    border-bottom: 1px solid #e0e2e5; /* 分隔线 */
+    padding-bottom: 20px;
+}
+
+/* 页脚样式 */
+footer {
+    background: linear-gradient(to right, #333, #222); /* 渐变背景 */
+    color: #fff;
+    text-align: center;
+    padding: 15px 0;
+    border-radius: 0 0 8px 8px; /* 底部圆角 */
+}
