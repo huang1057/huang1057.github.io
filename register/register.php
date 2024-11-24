@@ -1,49 +1,58 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>用户注册 - 校园网</title>
-    <link rel="stylesheet" href="styles.css">
-</head>
-<body>
-    <header>
-        <h1>校园网</h1>
-        <nav>
-            <ul>
-                <li><a href="index.php">首页</a></li>
-                <li><a href="login.php">登录</a></li>
-            </ul>
-        </nav>
-    </header>
+<?php
+// 开启会话
+session_start();
 
-    <main>
-        <h2>用户注册</h2>
-        <form action="register_process.php" method="post">
-            <input type="text" name="username" placeholder="用户名" required />
-            <input type="password" name="password" placeholder="密码" required />
-            <input type="email" name="email" placeholder="邮箱" required />
-            <select name="role" required>
-                <option value="student">学生</option>
-                <option value="staff">教职员工</option>
-            </select>
-            <select name="class_id" required>
-                <option value="">选择班级</option>
-                <?php
-                // 从数据库中获取班级
-                $pdo = new PDO("sqlite:campusweb.db");
-                $stmt = $pdo->query("SELECT * FROM Classes");
-                while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-                    echo "<option value='{$row['class_id']}'>{$row['class_name']}</option>";
-                }
-                ?>
-            </select>
-            <input type="submit" value="注册" />
-        </form>
-    </main>
+// 连接数据库
+$host = 'mysql.sqlpub.com'; // 或者是你的数据库服务器地址
+$dbname = 'campusweb';
+$dbUsername = 'adminhuang'; // 根据你的数据库用户名进行替换
+$dbPassword = '2C7YSumEaZzax3K8'; // 根据你的数据库密码进行替换
 
-    <footer>
-        <p>版权所有 &copy; 2024 校园网</p>
-    </footer>
-</body>
-</html>
+// 创建PDO实例
+try {
+    $pdo = new PDO("mysql:host=$host;dbname=$dbname;charset=utf8mb4", $dbUsername, $dbPassword, [
+        PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
+        PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
+    ]);
+} catch (PDOException $e) {
+    die("数据库连接失败: " . $e->getMessage());
+}
+
+// 处理注册
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    // 从POST请求中获取数据
+    $username = $_POST['username'] ?? '';
+    $password = $_POST['password'] ?? '';
+    $email = $_POST['email'] ?? '';
+    $user_type = $_POST['user_type'] ?? 'student'; // 默认用户类型为学生
+
+    // 验证输入
+    if (empty($username) || empty($password) || empty($email)) {
+        $_SESSION['error'] = '所有字段都是必填项。';
+        header('Location: register.html');
+        exit();
+    }
+
+    // 检查用户名是否已存在
+    $stmt = $pdo->prepare("SELECT username FROM users WHERE username = :username");
+    $stmt->execute(['username' => $username]);
+    if ($stmt->fetch()) {
+        $_SESSION['error'] = '用户名已存在。';
+        header('Location: register.html');
+        exit();
+    }
+
+    // 密码加密
+    $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
+
+    // 插入新用户
+    $sql = "INSERT INTO users (username, password, email, user_type) VALUES (?, ?, ?, ?)";
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute([$username, $hashedPassword, $email, $user_type]);
+
+    // 注册成功后重定向或显示消息
+    $_SESSION['message'] = '注册成功，请登录。';
+    header('Location: login.html');
+    exit();
+}
+?>
