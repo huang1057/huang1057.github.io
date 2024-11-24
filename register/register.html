@@ -1,24 +1,43 @@
-<!-- register/register.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>注册 - 校园网</title>
-    <link rel="stylesheet" href="../assets/css/styles.css">
+    <link rel="stylesheet" href="assets/css/styles.css">
 </head>
 <body>
-    <main>
+    <div class="container">
         <h2>注册</h2>
         <form action="register.php" method="post">
             <label for="username">用户名:</label>
             <input type="text" id="username" name="username" required><br><br>
+
             <label for="password">密码:</label>
             <input type="password" id="password" name="password" required><br><br>
+
             <label for="email">邮箱:</label>
             <input type="email" id="email" name="email" required><br><br>
+
+            <label for="user_type">用户类型:</label>
+            <select id="user_type" name="user_type">
+                <option value="student">学生</option>
+                <option value="staff">教职人员</option>
+            </select><br><br>
+
             <input type="submit" value="注册">
         </form>
-    </main>
+        <?php
+        // 显示会话中的错误消息或成功消息
+        if (isset($_SESSION['error'])) {
+            echo "<p style='color: red;'>" . $_SESSION['error'] . "</p>";
+            unset($_SESSION['error']);
+        }
+        if (isset($_SESSION['message'])) {
+            echo "<p style='color: green;'>" . $_SESSION['message'] . "</p>";
+            unset($_SESSION['message']);
+        }
+        ?>
+    </div>
 </body>
 </html>
